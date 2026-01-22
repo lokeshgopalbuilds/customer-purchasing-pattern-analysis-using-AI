@@ -1,0 +1,39 @@
+# Project Configuration
+project:
+  name: "customer-purchasing-pattern-analysis"
+  version: "0.1.0"
+  description: "AI-powered analysis of customer purchasing patterns"
+
+# Data Configuration
+data:
+  raw_path: "data/raw"
+  processed_path: "data/processed"
+  test_size: 0.2
+  random_state: 42
+
+# Model Configuration
+model:
+  type: "neural_network"
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  dropout_rate: 0.3
+
+# Feature Engineering
+features:
+  scaling: "standard"
+  encoding: "onehot"
+  feature_selection: true
+  n_features: 20
+
+# Output Configuration
+output:
+  results_path: "results"
+  models_path: "results/models"
+  plots_path: "results/plots"
+  format: "csv"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
