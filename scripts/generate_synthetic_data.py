@@ -1,8 +1,10 @@
-import numpy as np
-import pandas as pd
-from datetime import datetime, timedelta
-from pathlib import Path
+import numpy as np  # Numerical computations and random number generation
+import pandas as pd  # Data manipulation and DataFrame operations
+from datetime import datetime, timedelta  # Date and time handling
+from pathlib import Path  # Cross-platform file path operations
 
+
+#================ DATA GENERATION PART ============
 CATEGORIES = [
     "Electronics",
     "Clothing",
@@ -25,14 +27,27 @@ TIERS = ["Bronze", "Silver", "Gold", "Platinum"]
 REGIONS = ["North", "South", "East", "West", "Central"]
 DEVICES = ["Mobile", "Desktop", "Tablet"]
 GENDERS = ["Male", "Female", "Other"]
+#=========================================================
 
 
-def generate_dates(n_rows: int, rng: np.random.Generator):
+def generate_dates(    n_rows: int, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Generate random signup and last purchase dates for customers.
+
+    Args:
+        n_rows: Number of date pairs to generate.
+        rng: NumPy random number generator instance.
+
+    Returns:
+        A tuple of (signup_dates, last_purchase_dates) as numpy arrays.
+    """
     start = datetime(2019, 1, 1)
     # Up to end of 2025
     max_days = (datetime(2025, 12, 31) - start).days
     signup_offsets = rng.integers(0, max_days, size=n_rows)
-    signup_dates = np.array([start + timedelta(days=int(d)) for d in signup_offsets])
+    signup_dates = np.array(
+        [start + timedelta(days=int(d)) for d in signup_offsets]
+    )
 
     # Last purchase is after signup by 0-730 days, clipped at end of 2025
     last_offsets = rng.integers(0, 730, size=n_rows)
@@ -177,10 +192,25 @@ def generate_data(n_rows: int = 15000, random_state: int = 42) -> pd.DataFrame:
 
 
 def main():
+    """
+    Generate synthetic customer data and save it to a CSV file.
+    
+    Creates a dataset of 15,000 customer records with purchasing patterns
+    and saves it to data/raw/synthetic_customers.csv.
+    """
+    # Define output path for the synthetic dataset
     out_path = Path("data/raw/synthetic_customers.csv")
+    
+    # Create parent directories if they don't exist
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Generate synthetic customer data
     df = generate_data(n_rows=15000, random_state=42)
+    
+    # Export dataframe to CSV file
     df.to_csv(out_path, index=False)
+    
+    # Print confirmation message with row count and file path
     print(f"Wrote {len(df)} rows to {out_path}")
 
 
